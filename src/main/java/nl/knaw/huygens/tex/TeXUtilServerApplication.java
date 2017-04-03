@@ -47,7 +47,7 @@ public class TeXUtilServerApplication extends Application<TeXUtilServerConfigura
       LOG.info("{}: {}, message='{}'", name, result.isHealthy() ? "healthy" : "unhealthy", result.getMessage());
       healthy.set(healthy.get() && result.isHealthy());
     });
-    if (!healthy.get()){
+    if (!healthy.get()) {
       throw new RuntimeException("Failing health check(s)");
     }
 

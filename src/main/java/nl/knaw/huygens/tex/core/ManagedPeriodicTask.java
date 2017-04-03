@@ -6,7 +6,7 @@ import com.google.common.util.concurrent.AbstractScheduledService;
 import io.dropwizard.lifecycle.Managed;
 
 public class ManagedPeriodicTask implements Managed {
-  private final Logger LOG = LoggerFactory.getLogger(ManagedPeriodicTask.class);
+  private final Logger LOG = LoggerFactory.getLogger(getClass());
   private final AbstractScheduledService periodicTask;
 
   public ManagedPeriodicTask(AbstractScheduledService periodicTask) {
