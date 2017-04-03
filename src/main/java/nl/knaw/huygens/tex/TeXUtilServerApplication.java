@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.codahale.metrics.health.HealthCheck.Result;
 import io.dropwizard.Application;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -30,7 +32,11 @@ public class TeXUtilServerApplication extends Application<TeXUtilServerConfigura
 
   @Override
   public void initialize(final Bootstrap<TeXUtilServerConfiguration> bootstrap) {
-    // TODO: application initialization
+    // Enable variable substitution with environment variables
+    bootstrap.setConfigurationSourceProvider(//
+        new SubstitutingSourceProvider(//
+            bootstrap.getConfigurationSourceProvider(), //
+            new EnvironmentVariableSubstitutor()));
   }
 
   @Override

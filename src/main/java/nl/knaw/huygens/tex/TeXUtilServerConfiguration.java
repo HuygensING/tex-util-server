@@ -16,7 +16,7 @@ public class TeXUtilServerConfiguration extends Configuration {
   }
 
   @NotEmpty
-  private String baseURI;
+  private String baseURI="http://localhost:8080";
 
   @NotEmpty
   private String tex2svgCommand;

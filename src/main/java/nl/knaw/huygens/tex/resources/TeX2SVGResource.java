@@ -42,7 +42,10 @@ public class TeX2SVGResource {
   }
 
   private void convert2svg(UUID uuid) {
-    ProcessBuilder processBuilder = new ProcessBuilder(config.getTeX2SVGCommand(), uuid.toString());
+    ProcessBuilder processBuilder = new ProcessBuilder(config.getTeX2SVGCommand(), config.getTempDir().getAbsolutePath().toString(), uuid.toString())//
+        .redirectError(new File(config.getTempDir(), uuid + ".err"))//
+        .redirectOutput(new File(config.getTempDir(), uuid + ".out"))//
+        ;
     try {
       processBuilder.start();
     } catch (IOException e) {
