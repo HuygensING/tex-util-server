@@ -1,0 +1,7 @@
+baseURI: http://localhost:8080
+tex2svgCommand: C:\PROGRA~3\CHOCOL~1\lib\Cygwin\tools\cygwin\home\bramb\bin\tex2svg
+
+logging:
+  level: INFO
+  loggers:
+    nl.knaw.huygens.tex: DEBUG
