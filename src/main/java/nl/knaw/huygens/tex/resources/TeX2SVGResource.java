@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.UUID;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,6 +17,10 @@ import nl.knaw.huygens.tex.TeXUtilServerConfiguration;
 @Path("2svg")
 public class TeX2SVGResource {
 
+  private static final String SVG = ".svg";
+  private static final String OUT = ".out";
+  private static final String ERR = ".err";
+  private static final Charset UTF8 = Charset.forName("UTF-8");
   private TeXUtilServerConfiguration config;
 
   public TeX2SVGResource(TeXUtilServerConfiguration config) {
@@ -30,10 +35,23 @@ public class TeX2SVGResource {
     File tmpDir = config.getTempDir();
     File texFile = new File(tmpDir, uuid + ".tex");
     try {
-      FileUtils.write(texFile, tex, Charset.forName("UTF-8"));
+      FileUtils.write(texFile, tex, UTF8);
       convert2svg(uuid);
 
-      URI svgURI = URI.create(config.getBaseURI() + "/svg/" + uuid + ".svg");
+      File svgFile = new File(tmpDir, uuid + SVG);
+      if (!svgFile.exists()) {
+        String out = fileContent(tmpDir, uuid, OUT);
+        String err = fileContent(tmpDir, uuid, ERR);
+        StringBuilder message = new StringBuilder("SVG could not be generated:\n")//
+            .append("\n## stdout:\n\n")//
+            .append(out)//
+            .append("\n## stderr:\n\n")//
+            .append(err)//
+            .append("\n");
+        throw new BadRequestException(message.toString());
+      }
+
+      URI svgURI = URI.create(config.getBaseURI() + "/svg/" + uuid + SVG);
       return Response.created(svgURI).build();
     } catch (IOException e) {
       e.printStackTrace();
@@ -41,10 +59,15 @@ public class TeX2SVGResource {
     }
   }
 
+  private String fileContent(File tmpDir, UUID uuid, String ext) throws IOException {
+    return FileUtils.readFileToString(new File(tmpDir, uuid + ext), UTF8);
+  }
+
   private void convert2svg(UUID uuid) {
-    ProcessBuilder processBuilder = new ProcessBuilder(config.getTeX2SVGCommand(), config.getTempDir().getAbsolutePath().toString(), uuid.toString())//
-        .redirectError(new File(config.getTempDir(), uuid + ".err"))//
-        .redirectOutput(new File(config.getTempDir(), uuid + ".out"))//
+    File tmp = config.getTempDir();
+    ProcessBuilder processBuilder = new ProcessBuilder(config.getTeX2SVGCommand(), tmp.getAbsolutePath().toString(), uuid.toString())//
+        .redirectError(new File(tmp, uuid + ERR))//
+        .redirectOutput(new File(tmp, uuid + OUT))//
         ;
     try {
       processBuilder.start();
