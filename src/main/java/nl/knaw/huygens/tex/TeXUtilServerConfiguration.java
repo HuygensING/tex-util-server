@@ -23,7 +23,7 @@ public class TeXUtilServerConfiguration extends Configuration {
 
   @JsonProperty
   public void setBaseURI(String baseURI) {
-    this.baseURI = baseURI;
+    this.baseURI = baseURI.replaceFirst("/$", "");
   }
 
   @JsonProperty

@@ -12,10 +12,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import nl.knaw.huygens.tex.TeXUtilServerConfiguration;
 
 @Path("2svg")
 public class TeX2SVGResource {
+  Logger LOG = LoggerFactory.getLogger(getClass());
 
   private static final String SVG = ".svg";
   private static final String OUT = ".out";
@@ -36,7 +39,8 @@ public class TeX2SVGResource {
     File texFile = new File(tmpDir, uuid + ".tex");
     try {
       FileUtils.write(texFile, tex, UTF8);
-      convert2svg(uuid);
+      int returnCode = convert2svg(uuid);
+      LOG.info("returnCode={}",returnCode);
 
       File svgFile = new File(tmpDir, uuid + SVG);
       if (!svgFile.exists()) {
@@ -63,15 +67,17 @@ public class TeX2SVGResource {
     return FileUtils.readFileToString(new File(tmpDir, uuid + ext), UTF8);
   }
 
-  private void convert2svg(UUID uuid) {
+  private int convert2svg(UUID uuid) {
     File tmp = config.getTempDir();
     ProcessBuilder processBuilder = new ProcessBuilder(config.getTeX2SVGCommand(), tmp.getAbsolutePath().toString(), uuid.toString())//
         .redirectError(new File(tmp, uuid + ERR))//
         .redirectOutput(new File(tmp, uuid + OUT))//
         ;
     try {
-      processBuilder.start();
-    } catch (IOException e) {
+      Process process = processBuilder.start();
+      process.waitFor();
+      return process.exitValue();
+    } catch (IOException | InterruptedException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
     }

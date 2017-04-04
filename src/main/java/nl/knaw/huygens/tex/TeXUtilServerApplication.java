@@ -15,6 +15,7 @@ import nl.knaw.huygens.tex.core.ManagedPeriodicTask;
 import nl.knaw.huygens.tex.core.RemoveExpiredFilesTask;
 import nl.knaw.huygens.tex.health.CommandHealthCheck;
 import nl.knaw.huygens.tex.health.TmpDirHealthCheck;
+import nl.knaw.huygens.tex.resources.HomePageResource;
 import nl.knaw.huygens.tex.resources.SVGResource;
 import nl.knaw.huygens.tex.resources.TeX2SVGResource;
 
@@ -41,6 +42,7 @@ public class TeXUtilServerApplication extends Application<TeXUtilServerConfigura
 
   @Override
   public void run(final TeXUtilServerConfiguration configuration, final Environment environment) {
+    environment.jersey().register(new HomePageResource());
     environment.jersey().register(new TeX2SVGResource(configuration));
     environment.jersey().register(new SVGResource(configuration.getTempDir()));
     environment.healthChecks().register("command", new CommandHealthCheck(configuration.getTeX2SVGCommand()));
