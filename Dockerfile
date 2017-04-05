@@ -9,5 +9,6 @@ WORKDIR ${wd}
 ADD target/tex-util-server.jar ${wd}/
 ADD config.yml ${wd}/
 ADD scripts/tex2svg.sh ${wd}/scripts/
+RUN chmod a+x scripts/tex2svg.sh
 EXPOSE 8080 8081
 ENTRYPOINT java -jar tex-util-server.jar server config.yml
