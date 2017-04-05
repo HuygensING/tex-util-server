@@ -9,7 +9,7 @@ ADD target/tex-util-server.jar ${wd}/
 ADD config.yml ${wd}/
 ADD scripts/tex2svg.sh ${wd}/scripts/
 RUN chmod a+x ${wd}/scripts/tex2svg.sh
-RUN chmown -R texutil .
+RUN chown -R texutil .
 EXPOSE 8080 8081
 USER texutil
 ENTRYPOINT java -jar tex-util-server.jar server config.yml
