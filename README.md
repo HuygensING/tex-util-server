@@ -11,3 +11,10 @@ Health Check
 ---
 
 To see your applications health enter url `http://localhost:8081/healthcheck`
+
+How to build the docker image
+---
+
+1. Run `mvn package`
+1. Run `cp target/tex-util-server*.jar target/tex-util-server.jar`
+1. Run `docker build -t huygensing/tex-util-server `.``
