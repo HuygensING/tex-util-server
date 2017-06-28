@@ -17,8 +17,15 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <dropwizard.version>1.1.0</dropwizard.version>
     <mainClass>nl.knaw.huygens.tex.TeXUtilServerApplication</mainClass>
+
+    <commons-io.version>2.5</commons-io.version>
+    <dropwizard.version>1.1.2</dropwizard.version>
+    <maven-shade.version>2.4.3</maven-shade.version>
+    <maven-jar.version>2.6</maven-jar.version>
+    <maven-javadoc.version>2.10.3</maven-javadoc.version>
+    <maven-compiler.version>3.5.1</maven-compiler.version>
+    <maven-project-info-reports.version>2.8.1</maven-project-info-reports.version>
   </properties>
 
   <dependencyManagement>
@@ -41,7 +48,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>2.5</version>
+      <version>${commons-io.version}</version>
     </dependency>
   </dependencies>
 
@@ -49,7 +56,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.1</version>
+        <version>${maven-shade.version}</version>
         <configuration>
           <createDependencyReducedPom>true</createDependencyReducedPom>
           <transformers>
@@ -83,7 +90,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>2.6</version>
+        <version>${maven-jar.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -95,7 +102,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
+        <version>${maven-compiler.version}</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -108,7 +115,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.8.1</version>
+        <version>${maven-project-info-reports.version}</version>
         <configuration>
           <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
           <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
@@ -116,7 +123,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
+        <version>${maven-javadoc.version}</version>
       </plugin>
     </plugins>
   </reporting>
