@@ -1,6 +1,7 @@
 # TeXUtilServer
 
-REST-based server dealing with LaTeX
+REST-based server dealing with LaTeX.
+
 Currently only compiles LaTeX code to SVG.
 
 
@@ -25,11 +26,13 @@ How to build the docker image
 
 How to run the docker image
 ---
-`docker run -d huygensing/tex-util-server -p {local_main_port}:8080 -p {local_admin_port}:8081 -e BASE_URI=http://{local_server_name}:{local_main_port}`
+Run `docker run -d huygensing/tex-util-server -p {local_main_port}:8080 -p {local_admin_port}:8081 -e BASE_URI=http://{local_server_name}:{local_main_port}`
 
 
 How to generate SVG from LaTeX
 ---
 POST the LaTeX code as `Content-type: text/plain` to `http://{local_server_name}:{local_main_port}/2svg`
-This call will, on success, return the URL to the generated svg in a `Location`: header.
+
+This call will, on success, return the URL to the generated svg in a `Location` header.
+
 The TeX code uploaded, the generated SVG and all the intermediary files will be deleted after 1 hour.
