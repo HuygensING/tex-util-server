@@ -1,6 +1,6 @@
 FROM java:8
 RUN apt-get update -q && apt-get install -qy \
-    texlive
+    texlive-full
 ENV wd=/home/texutil
 RUN useradd -m texutil
 RUN mkdir -p /home/texutil/scripts
