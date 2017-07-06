@@ -1,6 +1,6 @@
 FROM java:8
 RUN apt-get update -q && apt-get install -qy \
-    texlive texlive-latex-extra texlive-publishers texlive-generic-extra texlive-plain-extra texlive-humanities texlive-science
+    texlive texlive-latex-extra texlive-publishers texlive-generic-extra texlive-plain-extra texlive-humanities texlive-science texlive-omega
 #    texlive-full
 ENV wd=/home/texutil
 RUN useradd -m texutil
@@ -12,5 +12,5 @@ ADD scripts/tex2svg.sh ${wd}/scripts/
 RUN chmod a+x ${wd}/scripts/tex2svg.sh
 RUN chown -R texutil .
 EXPOSE 8080 8081
-#U  SER texutil
+#USER texutil
 ENTRYPOINT java -jar tex-util-server.jar server config.yml
